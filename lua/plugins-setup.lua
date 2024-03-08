@@ -16,6 +16,9 @@ require("lazy").setup({ { import = "plugins" }, { import = "plugins.lsp" } }, {
     --colorscheme = { "nightfly" },
     colorscheme = { "tokyonight" }
   },
+  ui = {
+    border = "rounded",
+  },
   checker = {
     enabled = true,
     notify = false,

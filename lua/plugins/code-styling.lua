@@ -1,26 +1,20 @@
 return {
 	{
-		"yamatsum/nvim-cursorline",
-		config = function()
-			require("nvim-cursorline").setup({
-				cursorline = {
-					enable = true,
-					timeout = 1000,
-					number = false,
-				},
-				cursorword = {
-					enable = true,
-					min_length = 3,
-					hl = { underline = true },
-				},
-			})
-		end,
-	},
-	{
 		"RRethy/vim-illuminate",
 		config = function()
 			require("illuminate").configure({
 				modes_allowlist = { "n" },
+				filetypes_denylist = {
+					"dirbuf",
+					"dirvish",
+					"fugitive",
+					"neo-tree",
+				},
+				providers = {
+					"lsp",
+					"treesitter",
+					"regex",
+				},
 			})
 			vim.cmd([[
                 augroup illuminate_augroup
