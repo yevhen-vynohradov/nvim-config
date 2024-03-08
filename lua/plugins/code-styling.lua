@@ -1,21 +1,29 @@
 return {
 	{
 		"RRethy/vim-illuminate",
-		config = function()
-			require("illuminate").configure({
-				modes_allowlist = { "n" },
-				filetypes_denylist = {
-					"dirbuf",
-					"dirvish",
-					"fugitive",
-					"neo-tree",
-				},
-				providers = {
-					"lsp",
-					"treesitter",
-					"regex",
-				},
-			})
+
+    opts = {
+			modes_allowlist = { "n" },
+			filetypes_denylist = {
+				"dirbuf",
+				"dirvish",
+				"fugitive",
+				"neo-tree",
+			},
+			providers = {
+				"lsp",
+				"treesitter",
+				"regex",
+			},
+			delay = 200,
+			large_file_cutoff = 2000,
+			large_file_overrides = {
+				providers = { "lsp" },
+			},
+		},
+		config = function(_, opts)
+			require("illuminate").configure(opts)
+
 			vim.cmd([[
                 augroup illuminate_augroup
                     autocmd!

@@ -58,58 +58,7 @@ return {
 		event = "BufReadPre",
 		priority = 1200,
 		dependencies = {
-			{
-				"SmiteshP/nvim-navic",
-        dependencies = {
-          "neovim/nvim-lspconfig",
-        },
-				config = function()
-					require("nvim-navic").setup({
-						icons = {
-							File = "󰈙 ",
-							Module = " ",
-							Namespace = "󰌗 ",
-							Package = " ",
-							Class = "󰌗 ",
-							Method = "󰆧 ",
-							Property = " ",
-							Field = " ",
-							Constructor = " ",
-							Enum = "󰕘",
-							Interface = "󰕘",
-							Function = "󰊕 ",
-							Variable = "󰆧 ",
-							Constant = "󰏿 ",
-							String = "󰀬 ",
-							Number = "󰎠 ",
-							Boolean = "◩ ",
-							Array = "󰅪 ",
-							Object = "󰅩 ",
-							Key = "󰌋 ",
-							Null = "󰟢 ",
-							EnumMember = " ",
-							Struct = "󰌗 ",
-							Event = " ",
-							Operator = "󰆕 ",
-							TypeParameter = "󰊄 ",
-						},
-						lsp = {
-							auto_attach = "auto_attach",
-							preference = nil,
-						},
-						highlight = false,
-						separator = " > ",
-						depth_limit = 0,
-						depth_limit_indicator = "..",
-						safe_output = true,
-						lazy_update_context = false,
-						click = false,
-						format_text = function(text)
-							return text
-						end,
-					})
-				end,
-			},
+			"SmiteshP/nvim-navic",
 		},
 		config = function()
 			local helpers = require("incline.helpers")
@@ -177,5 +126,33 @@ return {
 				},
 			})
 		end,
+	},
+	-- buffer remove
+	{
+		"echasnovski/mini.bufremove",
+
+		keys = {
+			{
+				"<leader>bd",
+				function()
+					local bd = require("mini.bufremove").delete
+					if vim.bo.modified then
+						local choice =
+							vim.fn.confirm(("Save changes to %q?"):format(vim.fn.bufname()), "&Yes\n&No\n&Cancel")
+						if choice == 1 then -- Yes
+							vim.cmd.write()
+							bd(0)
+						elseif choice == 2 then -- No
+							bd(0, true)
+						end
+					else
+						bd(0)
+					end
+				end,
+				desc = "Delete Buffer",
+			},
+      -- stylua: ignore
+      { "<leader>bD", function() require("mini.bufremove").delete(0, true) end, desc = "Delete Buffer (Force)" },
+		},
 	},
 }
