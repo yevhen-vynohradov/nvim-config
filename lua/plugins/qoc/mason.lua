@@ -16,6 +16,7 @@ return {
     -- enable mason and configure icons
     mason.setup({
       ui = {
+        border = "rounded",
         icons = {
           package_installed = "✓",
           package_pending = "➜",
@@ -27,11 +28,17 @@ return {
     mason_lspconfig.setup({
       -- list of servers for mason to install
       ensure_installed = {
-        "tsserver",
-        "html",
         "cssls",
-        "lua_ls",
+        "cssmodules_ls",
+        "docker_compose_language_service",
+        "dockerls",
         "emmet_ls",
+        "html",
+        "yamlls",
+        "sqls",
+        "stylelint_lsp",
+        "tsserver",
+        "lua_ls",
         "prismals",
       },
       -- auto-install configured servers (with lspconfig)
@@ -40,9 +47,19 @@ return {
 
     mason_tool_installer.setup({
       ensure_installed = {
+        "htmlbeautifier",
+        "sql-formatter",
         "prettier", -- prettier formatter
+        "prettierd",
         "stylua", -- lua formatter
         "eslint_d", -- js linter
+        "markdownlint",
+        "stylelint",
+        "jq",
+        "commitlint",
+        "yamlfmt",
+        "jsonlint",
+        "yq",
       },
     })
   end,

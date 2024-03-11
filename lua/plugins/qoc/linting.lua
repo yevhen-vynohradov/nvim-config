@@ -11,7 +11,10 @@ return {
 			javascriptreact = { "eslint_d" },
 			typescriptreact = { "eslint_d" },
 			markdown = { "markdownlint" },
-      --json = { "jsonlint" },
+			json = { "jsonlint" },
+			css = { "stylelint" },
+			scss = { "stylelint" },
+			sass = { "stylelint" },
 		}
 
 		local lint_augroup = vim.api.nvim_create_augroup("lint", { clear = true })
