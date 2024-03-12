@@ -144,12 +144,13 @@ return {
 	{
 		"nvim-treesitter/nvim-treesitter-context",
 		lazy = true,
+		event = { "BufReadPre", "BufNewFile" },
 		dependencies = { "nvim-treesitter/nvim-treesitter" },
 		config = function()
 			local context = require("treesitter-context")
 			context.setup({
 				enable = true,
-				-- max_lines = 4,
+				-- max_lines = 5,
 				line_numbers = true,
 				separator = "-",
 			})
@@ -158,6 +159,7 @@ return {
 	{
 		"nvim-treesitter/nvim-treesitter-refactor",
 		lazy = true,
+		event = { "BufReadPre", "BufNewFile" },
 		dependencies = { "nvim-treesitter/nvim-treesitter" },
 
 		config = function()
@@ -194,6 +196,7 @@ return {
 	{
 		"nvim-treesitter/nvim-treesitter-textobjects",
 		lazy = true,
+		event = { "BufReadPre", "BufNewFile" },
 		dependencies = { "nvim-treesitter/nvim-treesitter" },
 
 		config = function()
