@@ -10,6 +10,7 @@ return {
     lualine.setup({
       options = {
         theme = "tokyonight",
+        -- theme = "monokai-pro",
       },
       sections = {
         lualine_x = {

@@ -21,6 +21,7 @@ require("lazy").setup({
 	install = {
 		--colorscheme = { "nightfly" },
 		colorscheme = { "tokyonight" },
+    -- colorscheme = { "monokai-pro" },
 	},
 	ui = {
 		border = "rounded",
