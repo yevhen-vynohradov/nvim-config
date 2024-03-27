@@ -15,13 +15,14 @@ require("lazy").setup({
 	{ import = "plugins" },
 	{ import = "plugins.qoc" },
 	{ import = "plugins.ui" },
-  { import = "plugins.tools" },
-  { import = "plugins.vcs" },
+	{ import = "plugins.tools" },
+	{ import = "plugins.vcs" },
+	--[[ { import = "core.utils" }, ]]
 }, {
 	install = {
 		--colorscheme = { "nightfly" },
 		colorscheme = { "tokyonight" },
-    -- colorscheme = { "monokai-pro" },
+		-- colorscheme = { "monokai-pro" },
 	},
 	ui = {
 		border = "rounded",
