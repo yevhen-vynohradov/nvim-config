@@ -10,7 +10,7 @@ return {
 		local lazy_status = require("lazy.status") -- to configure lazy pending updates count
 		local winbar = require("core.utils.winbar")
 		local utils = require("core.utils")
-		local icons = require("core.icons")
+		local icons = require("lua.config.icons")
 		local navic = require("nvim-navic")
 		-- configure lualine with modified theme
 		-- lualine.setup({

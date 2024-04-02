@@ -2,7 +2,7 @@ local M = {}
 
 local navic = require("nvim-navic")
 local utils = require("core.utils")
-local icons = require("core.icons")
+local icons = require("lua.config.icons")
 
 local function get_modified()
   local file_name = vim.fn.expand "%:t"

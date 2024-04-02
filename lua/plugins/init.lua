@@ -1,5 +1,17 @@
 return {
-	"nvim-lua/plenary.nvim", -- lua functions that many plugins use
-	"christoomey/vim-tmux-navigator", -- tmux & split window navigation
-	"inkarkat/vim-ReplaceWithRegister", -- replace with register contents using motion (gr + motion)
+  {
+    "nvim-lua/plenary.nvim",
+  },
+  {
+    "tpope/vim-repeat", event = "VeryLazy",
+  },
+  {
+    "chrisgrieser/nvim-various-textobjs",
+    config = function()
+      require("various-textobjs").setup { useDefaultKeymaps = true }
+    end,
+    event = "VeryLazy",
+    enabled = false,
+  },
+  { "axieax/urlview.nvim", enabled = false, cmd = { "UrlView" } },
 }
