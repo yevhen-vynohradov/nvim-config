@@ -155,7 +155,7 @@ return {
     Package = " ",
     CircuitBoard = " ",
   },
-    lsp = {
+  lsp = {
     server_installed = "✓",
     server_pending = "➜",
     server_uninstalled = "✗",

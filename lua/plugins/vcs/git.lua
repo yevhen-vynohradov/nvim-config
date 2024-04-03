@@ -27,10 +27,10 @@ return {
     event = "BufReadPre",
     opts = {
       signs = {
-        add = { hl = "GitSignsAdd", text = "▍", numhl = "GitSignsAddNr", linehl = "GitSignsAddLn" },
+        add = { hl = "GitSignsAdd", text = "│", numhl = "GitSignsAddNr", linehl = "GitSignsAddLn" },
         change = {
           hl = "GitSignsChange",
-          text = "▍",
+          text = "│",
           numhl = "GitSignsChangeNr",
           linehl = "GitSignsChangeLn",
         },
@@ -48,7 +48,7 @@ return {
         },
         changedelete = {
           hl = "GitSignsChange",
-          text = "▍",
+          text = "│",
           numhl = "GitSignsChangeNr",
           linehl = "GitSignsChangeLn",
         },
@@ -119,7 +119,7 @@ return {
   {
     "aaronhallaert/advanced-git-search.nvim",
     config = function()
-      require("telescope").load_extension "advanced_git_search"
+      require("telescope").load_extension("advanced_git_search")
     end,
     dependencies = {
       "nvim-telescope/telescope.nvim",
@@ -137,16 +137,16 @@ return {
     },
     --stylua: ignore
     keys = {
-      {"<leader>gwm", function() require("telescope").extensions.git_worktree.git_worktrees() end, desc = "Manage"},
-      {"<leader>gwc", function() require("telescope").extensions.git_worktree.create_git_worktree() end, desc = "Create"},
+      { "<leader>gwm", function() require("telescope").extensions.git_worktree.git_worktrees() end,       desc = "Manage" },
+      { "<leader>gwc", function() require("telescope").extensions.git_worktree.create_git_worktree() end, desc = "Create" },
     },
   },
   {
     "akinsho/git-conflict.nvim",
     --stylua: ignore
     keys = {
-      {"<leader>gC", function() require("plugins.hydra.git-action").open_git_conflict_hydra() end, desc = "Conflict"},
-      {"<leader>gS", function() require("plugins.hydra.git-action").open_git_signs_hydra() end, desc = "Signs"},
+      { "<leader>gC", function() require("plugins.hydra.git-action").open_git_conflict_hydra() end, desc = "Conflict" },
+      { "<leader>gS", function() require("plugins.hydra.git-action").open_git_signs_hydra() end,    desc = "Signs" },
     },
     cmd = {
       "GitConflictChooseBoth",

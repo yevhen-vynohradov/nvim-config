@@ -170,4 +170,24 @@ function M.remove_path_last_separator(path)
   return path
 end
 
+function M.delete_buffer()
+  local bd = require("mini.bufremove").delete
+  if vim.bo.modified then
+    local choice =
+      vim.fn.confirm(("Save changes to %q?"):format(vim.fn.bufname()), "&Yes\n&No\n&Cancel")
+    if choice == 1 then -- Yes
+      vim.cmd.write()
+      bd(0, false)
+    elseif choice == 2 then -- No
+      bd(0, true)
+    end
+  else
+    bd(0, false)
+  end
+end
+
+function M.force_delete_buffer()
+  require("mini.bufremove").delete(0, true)
+end
+
 return M

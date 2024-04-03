@@ -169,29 +169,29 @@ local logos = setmetatable({
     [[                                                                       ]],
   },
   [[
-                               _                         
-                           ,--.\`-. __                   
-                         _,.`. \:/,"  `-._               
-                     ,-*" _,.-;-*`-.+"*._ )              
-                    ( ,."* ,-" / `.  \.  `.              
-                   ,"   ,;"  ,"\../\  \:   \             
-                  (   ,"/   / \.,' :   ))  /             
-                   \  |/   / \.,'  /  // ,'              
-                    \_)\ ,' \.,'  (  / )/                
-                        `  \._,'   `"                    
-                           \../                          
-                           \../                          
-                 ~        ~\../           ~~             
-          ~~          ~~   \../   ~~   ~      ~~         
-     ~~    ~   ~~  __...---\../-...__ ~~~     ~~         
-       ~~~~  ~_,--'        \../      `--.__ ~~    ~~     
-   ~~~  __,--'              `"             `--.__   ~~~  
-~~  ,--'                                         `--.    
+                               _
+                           ,--.\`-. __
+                         _,.`. \:/,"  `-._
+                     ,-*" _,.-;-*`-.+"*._ )
+                    ( ,."* ,-" / `.  \.  `.
+                   ,"   ,;"  ,"\../\  \:   \
+                  (   ,"/   / \.,' :   ))  /
+                   \  |/   / \.,'  /  // ,'
+                    \_)\ ,' \.,'  (  / )/
+                        `  \._,'   `"
+                           \../
+                           \../
+                 ~        ~\../           ~~
+          ~~          ~~   \../   ~~   ~      ~~
+     ~~    ~   ~~  __...---\../-...__ ~~~     ~~
+       ~~~~  ~_,--'        \../      `--.__ ~~    ~~
+   ~~~  __,--'              `"             `--.__   ~~~
+~~  ,--'                                         `--.
    '------......______             ______......------` ~~
- ~~~   ~    ~~      ~ `````---"""""  ~~   ~     ~~       
-        ~~~~    ~~  ~~~~       ~~~~~~  ~ ~~   ~~ ~~~  ~  
-     ~~   ~   ~~~     ~~~ ~         ~~       ~~   SSt    
-              ~        ~~       ~~~       ~              
+ ~~~   ~    ~~      ~ `````---"""""  ~~   ~     ~~
+        ~~~~    ~~  ~~~~       ~~~~~~  ~ ~~   ~~ ~~~  ~
+     ~~   ~   ~~~     ~~~ ~         ~~       ~~   SSt
+              ~        ~~       ~~~       ~
   ]],
 }, {
   __index = function(logos, key)
@@ -207,19 +207,24 @@ return {
   {
     "goolord/alpha-nvim",
     event = "VimEnter",
+    dependencies = {
+      "nvim-tree/nvim-web-devicons",
+      "nvim-lua/plenary.nvim",
+    },
     config = function()
+      local alpha = require("alpha")
       local dashboard = require("alpha.themes.dashboard")
       dashboard.section.header.val = logos["random"]
       dashboard.section.buttons.val = {
         dashboard.button("c", " " .. " Config", ":e $MYVIMRC <CR>"),
-        dashboard.button("f", " " .. " Find file", ":Telescope find_files <CR>"),
-        dashboard.button("g", " " .. " Find text", ":Telescope live_grep <CR>"),
-        dashboard.button("l", "鈴" .. " Lazy", ":Lazy<CR>"),
+        dashboard.button("f", "󰮗 " .. " Find file", ":Telescope find_files <CR>"),
+        dashboard.button("g", "󱎸 " .. " Find text", ":Telescope live_grep <CR>"),
+        dashboard.button("l", "󱧘 " .. " Lazy", ":Lazy<CR>"),
         dashboard.button("n", " " .. " New file", ":ene <BAR> startinsert <CR>"),
         dashboard.button("p", " " .. " Projects", ":Telescope projects <CR>"),
         dashboard.button("q", " " .. " Quit", ":qa<CR>"),
-        dashboard.button("r", " " .. " Recent files", ":Telescope oldfiles <CR>"),
-        dashboard.button("s", "勒" .. " Restore Session", [[:lua require("persistence").load() <cr>]]),
+        dashboard.button("r", " " .. " Recent files", ":Telescope oldfiles <CR>"),
+        dashboard.button("s", "󰦛 " .. " Restore Session", [[:lua require("persistence").load() <cr>]]),
       }
       for _, button in ipairs(dashboard.section.buttons.val) do
         button.opts.hl = "AlphaButtons"
@@ -241,7 +246,11 @@ return {
         })
       end
 
-      require("alpha").setup(dashboard.opts)
+      -- Send config to alpha
+      alpha.setup(dashboard.opts)
+
+      -- Disable folding on alpha buffer
+      vim.cmd([[autocmd FileType alpha setlocal nofoldenable]])
 
       vim.api.nvim_create_autocmd("User", {
         pattern = "LazyVimStarted",
