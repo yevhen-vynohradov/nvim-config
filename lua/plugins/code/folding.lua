@@ -35,8 +35,17 @@ return {
     "kevinhwang91/nvim-ufo",
     dependencies = {
       "kevinhwang91/promise-async",
+      "nvim-treesitter/nvim-treesitter",
       "luukvbaal/statuscol.nvim",
     },
+    event = { "VeryLazy" },
+    init = function()
+			vim.o.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
+			vim.o.foldcolumn = "1" -- '0' is not bad
+			vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
+			vim.o.foldlevelstart = 99
+			vim.o.foldenable = true
+		end,
     --stylua: ignore
     keys = {
       { "zc" },
@@ -67,4 +76,23 @@ return {
       require("ufo").setup(opts)
     end,
   },
+  {
+		"anuvyklack/fold-preview.nvim",
+		dependencies = "anuvyklack/keymap-amend.nvim",
+		config = function()
+			local fp = require("fold-preview")
+			local keymap = vim.keymap
+			keymap.amend = require("keymap-amend")
+
+			fp.setup({
+				border = "rounded",
+			})
+
+			keymap.amend("n", "K", function(original)
+				if not fp.toggle_preview() then
+					original()
+				end
+			end)
+		end,
+	},
 }

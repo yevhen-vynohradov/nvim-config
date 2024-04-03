@@ -85,37 +85,37 @@ return {
 			end)
 		end,
 	},
-	{
-		"luukvbaal/statuscol.nvim",
-		config = function()
-			local builtin = require("statuscol.builtin")
-			require("statuscol").setup({
-				relculright = true,
-				segments = {
-					{ text = { builtin.foldfunc }, click = "v:lua.ScFa" },
-					{ text = { "%s" }, click = "v:lua.ScSa" },
-					{ text = { builtin.lnumfunc, " " }, click = "v:lua.ScLa" },
-				},
-			})
-		end,
-	},
-	{
-		"anuvyklack/fold-preview.nvim",
-		dependencies = "anuvyklack/keymap-amend.nvim",
-		config = function()
-			local fp = require("fold-preview")
-			local keymap = vim.keymap
-			keymap.amend = require("keymap-amend")
+	-- {
+	-- 	"luukvbaal/statuscol.nvim",
+	-- 	config = function()
+	-- 		local builtin = require("statuscol.builtin")
+	-- 		require("statuscol").setup({
+	-- 			relculright = true,
+	-- 			segments = {
+	-- 				{ text = { builtin.foldfunc }, click = "v:lua.ScFa" },
+	-- 				{ text = { "%s" }, click = "v:lua.ScSa" },
+	-- 				{ text = { builtin.lnumfunc, " " }, click = "v:lua.ScLa" },
+	-- 			},
+	-- 		})
+	-- 	end,
+	-- },
+	-- {
+	-- 	"anuvyklack/fold-preview.nvim",
+	-- 	dependencies = "anuvyklack/keymap-amend.nvim",
+	-- 	config = function()
+	-- 		local fp = require("fold-preview")
+	-- 		local keymap = vim.keymap
+	-- 		keymap.amend = require("keymap-amend")
 
-			fp.setup({
-				border = "rounded",
-			})
+	-- 		fp.setup({
+	-- 			border = "rounded",
+	-- 		})
 
-			keymap.amend("n", "K", function(original)
-				if not fp.toggle_preview() then
-					original()
-				end
-			end)
-		end,
-	},
+	-- 		keymap.amend("n", "K", function(original)
+	-- 			if not fp.toggle_preview() then
+	-- 				original()
+	-- 			end
+	-- 		end)
+	-- 	end,
+	-- },
 }
