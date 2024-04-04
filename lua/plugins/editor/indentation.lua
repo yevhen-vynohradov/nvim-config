@@ -1,6 +1,10 @@
 return {
   {
+    -- This plugin adds indentation guides to Neovim.
+    -- It uses Neovim's virtual text feature and no conceal.
+
     "lukas-reineke/indent-blankline.nvim",
+    main = "ibl",
     event = { "BufReadPost", "BufNewFile" },
     opts = {
       indent = {
@@ -14,7 +18,9 @@ return {
           "alpha",
           "dashboard",
           "neo-tree",
+          "nvim-tree",
           "Trouble",
+          "trouble",
           "lazy",
           "mason",
           "notify",
@@ -23,7 +29,6 @@ return {
         },
       },
     },
-    main = "ibl",
   },
   {
     -- The goal of this plugin is to automatically detect 

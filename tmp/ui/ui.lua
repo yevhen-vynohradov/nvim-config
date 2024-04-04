@@ -98,35 +98,35 @@ return {
 	-- 		})
 	-- 	end,
 	-- },
-	{
-		"lukas-reineke/indent-blankline.nvim",
-		main = "ibl",
-		config = function()
-			require("ibl").setup({
-				indent = {
-					char = "│",
-					tab_char = "│",
-				},
-				scope = { enabled = true },
-				exclude = {
-					filetypes = {
-						"help",
-						"alpha",
-						"dashboard",
-						"neo-tree",
-						"nvim-tree",
-						"Trouble",
-						"trouble",
-						"lazy",
-						"mason",
-						"notify",
-						"toggleterm",
-						"lazyterm",
-					},
-				},
-			})
-		end,
-	},
+	-- {
+	-- 	"lukas-reineke/indent-blankline.nvim",
+	-- 	main = "ibl",
+	-- 	config = function()
+	-- 		require("ibl").setup({
+	-- 			indent = {
+	-- 				char = "│",
+	-- 				tab_char = "│",
+	-- 			},
+	-- 			scope = { enabled = true },
+	-- 			exclude = {
+	-- 				filetypes = {
+	-- 					"help",
+	-- 					"alpha",
+	-- 					"dashboard",
+	-- 					"neo-tree",
+	-- 					"nvim-tree",
+	-- 					"Trouble",
+	-- 					"trouble",
+	-- 					"lazy",
+	-- 					"mason",
+	-- 					"notify",
+	-- 					"toggleterm",
+	-- 					"lazyterm",
+	-- 				},
+	-- 			},
+	-- 		})
+	-- 	end,
+	-- },
 	-- buffer remove
 	-- {
 	-- 	"echasnovski/mini.bufremove",
