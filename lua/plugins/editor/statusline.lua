@@ -1,4 +1,4 @@
-local icons = require("config.icons")
+local icons = require("core.icons")
 local Job = require("plenary.job")
 local Utils = require("utils")
 

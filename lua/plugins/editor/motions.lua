@@ -132,7 +132,7 @@ return {
       },
     },
     opts = function()
-      local bookmark = require("config.icons").ui.BookMark
+      local bookmark = require("core.icons").ui.BookMark
       return {
         auto_save_trailblazer_state_on_exit = true,
         auto_load_trailblazer_state_on_enter = false,

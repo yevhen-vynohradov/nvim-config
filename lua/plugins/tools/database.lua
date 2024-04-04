@@ -1,10 +1,14 @@
 return {
   {
     "tpope/vim-dadbod",
-    dependencies = {
-      "kristijanhusak/vim-dadbod-ui",
-      "kristijanhusak/vim-dadbod-completion",
-    },
+    enabled = true,
+    cond = function()
+      local config = require('config')
+      if not config.tools.database then
+        return
+      end
+    end,
+    lazy = true,
     opts = {
       db_competion = function()
         require("cmp").setup.buffer { sources = { { name = "vim-dadbod-completion" } } }
@@ -37,5 +41,50 @@ return {
       { "<leader>Dr", "<cmd>DBUIRenameBuffer<cr>",  desc = "Rename Buffer" },
       { "<leader>Dq", "<cmd>DBUILastQueryInfo<cr>", desc = "Last Query Info" },
     },
+  },
+  {
+		"kristijanhusak/vim-dadbod-ui",
+    enabled = true,
+    cond = function()
+      local config = require('config')
+      if not config.tools.database then
+        return
+      end
+    end,
+    lazy = true,
+    dependencies = {
+			"tpope/vim-dadbod",
+			"kristijanhusak/vim-dadbod-completion",
+		},
+		cmd = { "DB", "DBUI" },
+		ft = { "sql", "mysql", "plsql" },
+		config = function()
+			vim.g.db_ui_save_location = vim.fn.getcwd() .. "/sql/"
+		end,
+	},
+  {
+		"kristijanhusak/vim-dadbod-completion",
+    enabled = true,
+    cond = function()
+      local config = require('config')
+      if not config.tools.database then
+        return
+      end
+    end,
+		lazy = true,
+    dependencies = {
+      "tpope/vim-dadbod",
+      "kristijanhusak/vim-dadbod-ui",
+    },
+    -- TODO: solve this duplication 
+		config = function()
+			vim.cmd([[
+                autocmd FileType sql setlocal omnifunc=vim_dadbod_completion#omni
+                autocmd FileType sql,mysql,plsql lua require('cmp').setup.buffer({ sources = {{ name = 'vim-dadbod-completion' }} })
+            ]])
+		end,
+	},
+  {
+    "kkharji/sqlite.lua"
   },
 }

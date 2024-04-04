@@ -25,7 +25,7 @@ return {
       local cmp = require("cmp")
       local luasnip = require("luasnip")
       local neogen = require("neogen")
-      local icons = require("config.icons")
+      local icons = require("core.icons")
       local compare = require("cmp.config.compare")
       local source_names = {
         nvim_lsp = "(LSP)",

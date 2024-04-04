@@ -31,4 +31,8 @@ return {
     vuejs = false,
     yaml = true,
   },
+  tools = {
+    debugger = false,
+    database = true,
+  },
 }

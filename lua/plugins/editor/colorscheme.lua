@@ -63,8 +63,18 @@ return {
       },
     },
   },
-  { "rebelot/kanagawa.nvim",    enabled = false, lazy = true, name = "kanagawa" },
-  { "sainnhe/gruvbox-material", enabled = false, lazy = true, name = "gruvbox-material" },
+  {
+    "rebelot/kanagawa.nvim",
+    enabled = false,
+    lazy = true,
+    name = "kanagawa"
+  },
+  {
+    "sainnhe/gruvbox-material",
+    enabled = false,
+    lazy = true,
+    name = "gruvbox-material"
+  },
   {
     "sainnhe/everforest",
     enabled = false,

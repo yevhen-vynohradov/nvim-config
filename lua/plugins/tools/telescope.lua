@@ -33,7 +33,9 @@ end
 function M.git_diff_picker(opts)
   opts = opts or require("telescope.themes").get_dropdown {}
   local list = vim.fn.systemlist "git diff --name-only"
-  pickers.new(opts, { prompt_title = "Git Diff Files", finder = finders.new_table { results = list }, sorter = conf.generic_sorter(opts) }):find()
+  pickers.new(opts,
+    { prompt_title = "Git Diff Files", finder = finders.new_table { results = list }, sorter = conf.generic_sorter(opts) })
+      :find()
 end
 
 M.actions = transform_mod {
@@ -64,32 +66,32 @@ M.actions = transform_mod {
     table.insert(data, 1, "." .. os_sep)
     actions.close(prompt_bufnr)
     pickers
-      .new({}, {
-        prompt_title = "Folders for Live Grep",
-        finder = finders.new_table { results = data, entry_maker = make_entry.gen_from_file {} },
-        previewer = conf.file_previewer {},
-        sorter = conf.file_sorter {},
-        attach_mappings = function(bufnr)
-          action_set.select:replace(function()
-            local current_picker = action_state.get_current_picker(bufnr)
+        .new({}, {
+          prompt_title = "Folders for Live Grep",
+          finder = finders.new_table { results = data, entry_maker = make_entry.gen_from_file {} },
+          previewer = conf.file_previewer {},
+          sorter = conf.file_sorter {},
+          attach_mappings = function(bufnr)
+            action_set.select:replace(function()
+              local current_picker = action_state.get_current_picker(bufnr)
 
-            local dirs = {}
-            local selections = current_picker:get_multi_selection()
-            if vim.tbl_isempty(selections) then
-              table.insert(dirs, action_state.get_selected_entry().value)
-            else
-              for _, selection in ipairs(selections) do
-                table.insert(dirs, selection.value)
+              local dirs = {}
+              local selections = current_picker:get_multi_selection()
+              if vim.tbl_isempty(selections) then
+                table.insert(dirs, action_state.get_selected_entry().value)
+              else
+                for _, selection in ipairs(selections) do
+                  table.insert(dirs, selection.value)
+                end
               end
-            end
-            live_grep_filters.directories = dirs
-            actions.close(bufnr)
-            run_live_grep(current_input)
-          end)
-          return true
-        end,
-      })
-      :find()
+              live_grep_filters.directories = dirs
+              actions.close(bufnr)
+              run_live_grep(current_input)
+            end)
+            return true
+          end,
+        })
+        :find()
   end,
 }
 
@@ -97,58 +99,59 @@ return {
   {
     "nvim-telescope/telescope.nvim",
     dependencies = {
-      { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
+      "nvim-lua/plenary.nvim",
+      {
+        "nvim-telescope/telescope-fzf-native.nvim",
+        build = "make"
+      },
       "nvim-telescope/telescope-file-browser.nvim",
       "nvim-telescope/telescope-project.nvim",
-      "ahmedkhalf/project.nvim",
       "cljoly/telescope-repo.nvim",
-      "stevearc/aerial.nvim",
       "nvim-telescope/telescope-frecency.nvim",
-      "kkharji/sqlite.lua",
-      "aaronhallaert/advanced-git-search.nvim",
       "benfowler/telescope-luasnip.nvim",
       "olacin/telescope-cc.nvim",
       "tsakirist/telescope-lazy.nvim",
+      "jvgrootveld/telescope-zoxide",
+      "nvim-telescope/telescope-live-grep-args.nvim",
+      "ahmedkhalf/project.nvim",
+      "kkharji/sqlite.lua",
+      "aaronhallaert/advanced-git-search.nvim",
       "tiagovla/scope.nvim",
       {
         "ecthelionvi/NeoComposer.nvim",
-        dependencies = { "kkharji/sqlite.lua" },
         enabled = false,
-        opts = {},
       },
-      "jvgrootveld/telescope-zoxide",
-      "nvim-telescope/telescope-live-grep-args.nvim",
     },
     cmd = "Telescope",
     -- stylua: ignore
     keys = {
-      { "<leader><space>", require("utils").find_files, desc = "Find Files" },
-      { "<leader>ff", require("utils").telescope("files"), desc = "Find Files (Root Dir)" },
-      { "<leader>fF", require("utils").telescope("files", { cwd = false }), desc = "Find Files (Cwd)" },
-      { "<leader>gf", M.git_diff_picker, desc = "Diff Files" },
-      { "<leader>fo", "<cmd>Telescope frecency theme=dropdown previewer=false<cr>", desc = "Recent" },
-      { "<leader>fb", "<cmd>Telescope buffers sort_mru=true ignore_current_buffer=true<cr>", desc = "Buffers" },
-      { "<leader>fm", "<cmd>Telescope marks<cr>", desc = "Marks" },
-      { "<leader>fc", "<cmd>cd %:p:h<cr>", desc = "Change WorkDir" },
-      { "<leader>fg", function() require("telescope").extensions.live_grep_args.live_grep_args() end, desc = "Live Grep", },
-      { "<leader>fr", "<cmd>Telescope file_browser<cr>", desc = "Browser" },
-      { "<leader>fz", "<cmd>Telescope zoxide list<cr>", desc = "Recent Folders" },
-      { "<leader>gc", "<cmd>Telescope conventional_commits<cr>", desc = "Conventional Commits" },
-      { "<leader>zs", "<cmd>Telescope lazy<cr>", desc = "Search Plugins" },
-      { "<leader>ps", "<cmd>Telescope repo list<cr>", desc = "Search" },
-      { "<leader>hs", "<cmd>Telescope help_tags<cr>", desc = "Search" },
-      { "<leader>pp", function() require("telescope").extensions.project.project { display_type = "minimal" } end, desc = "List", },
-      { "<leader>sw", require("utils").telescope("live_grep"), desc = "Grep (Root Dir)" },
-      { "<leader>sW", require("utils").telescope("live_grep", { cwd = false }), desc = "Grep (Cwd)" },
-      { "<leader>ss", "<cmd>Telescope luasnip<cr>", desc = "Snippets" },
-      { "<leader>sb", function() require("telescope.builtin").current_buffer_fuzzy_find() end, desc = "Buffer", },
-      { "<leader>vo", "<cmd>Telescope aerial<cr>", desc = "Code Outline" },
-      { "<leader>zc", function() require("telescope.builtin").colorscheme({enable_preview = true}) end, desc = "Colorscheme", },
-      { "<leader>su", function() require("telescope.builtin").live_grep({ search_dirs = {vim.fs.dirname(vim.fn.expand("%")) }}) end , desc = "Grep (Current File Path)" },
+      { "<leader><space>", require("utils").find_files,                                                                                     desc = "Find Files" },
+      { "<leader>ff",      require("utils").telescope("files"),                                                                             desc = "Find Files (Root Dir)" },
+      { "<leader>fF",      require("utils").telescope("files", { cwd = false }),                                                            desc = "Find Files (Cwd)" },
+      { "<leader>gf",      M.git_diff_picker,                                                                                               desc = "Diff Files" },
+      { "<leader>fo",      "<cmd>Telescope frecency theme=dropdown previewer=false<cr>",                                                    desc = "Recent" },
+      { "<leader>fb",      "<cmd>Telescope buffers sort_mru=true ignore_current_buffer=true<cr>",                                           desc = "Buffers" },
+      { "<leader>fm",      "<cmd>Telescope marks<cr>",                                                                                      desc = "Marks" },
+      { "<leader>fc",      "<cmd>cd %:p:h<cr>",                                                                                             desc = "Change WorkDir" },
+      { "<leader>fg",      function() require("telescope").extensions.live_grep_args.live_grep_args() end,                                  desc = "Live Grep", },
+      { "<leader>fr",      "<cmd>Telescope file_browser<cr>",                                                                               desc = "Browser" },
+      { "<leader>fz",      "<cmd>Telescope zoxide list<cr>",                                                                                desc = "Recent Folders" },
+      { "<leader>gc",      "<cmd>Telescope conventional_commits<cr>",                                                                       desc = "Conventional Commits" },
+      { "<leader>zs",      "<cmd>Telescope lazy<cr>",                                                                                       desc = "Search Plugins" },
+      { "<leader>ps",      "<cmd>Telescope repo list<cr>",                                                                                  desc = "Search" },
+      { "<leader>hs",      "<cmd>Telescope help_tags<cr>",                                                                                  desc = "Search" },
+      { "<leader>pp",      function() require("telescope").extensions.project.project { display_type = "minimal" } end,                     desc = "List", },
+      { "<leader>sw",      require("utils").telescope("live_grep"),                                                                         desc = "Grep (Root Dir)" },
+      { "<leader>sW",      require("utils").telescope("live_grep", { cwd = false }),                                                        desc = "Grep (Cwd)" },
+      { "<leader>ss",      "<cmd>Telescope luasnip<cr>",                                                                                    desc = "Snippets" },
+      { "<leader>sb",      function() require("telescope.builtin").current_buffer_fuzzy_find() end,                                         desc = "Buffer", },
+      { "<leader>vo",      "<cmd>Telescope aerial<cr>",                                                                                     desc = "Code Outline" },
+      { "<leader>zc",      function() require("telescope.builtin").colorscheme({ enable_preview = true }) end,                              desc = "Colorscheme", },
+      { "<leader>su",      function() require("telescope.builtin").live_grep({ search_dirs = { vim.fs.dirname(vim.fn.expand("%")) } }) end, desc = "Grep (Current File Path)" },
     },
     config = function(_, _)
       local telescope = require("telescope")
-      local icons = require("config.icons")
+      local icons = require("core.icons")
       local actions = require("telescope.actions")
       local actions_layout = require("telescope.actions.layout")
       local transform_mod = require("telescope.actions.mt").transform_mod
@@ -379,7 +382,7 @@ return {
 
       -- Highlights
       local fg_bg = require("utils").fg_bg
-      local colors = require("config.colors")
+      local colors = require("core.colors")
       fg_bg("TelescopePreviewTitle", colors.black, colors.green)
       fg_bg("TelescopePromptTitle", colors.black, colors.red)
       fg_bg("TelescopeResultsTitle", colors.darker_black, colors.blue)
@@ -399,4 +402,35 @@ return {
       }
     end,
   },
+  {
+    "debugloop/telescope-undo.nvim",
+    dependencies = { -- note how they're inverted to above example
+      {
+        "nvim-telescope/telescope.nvim",
+      },
+    },
+    keys = {
+      { -- lazy style key map
+        "<leader>u",
+        "<cmd>Telescope undo<cr>",
+        desc = "undo history",
+      },
+    },
+    opts = {
+      -- don't use `defaults = { }` here, do this in the main telescope spec
+      extensions = {
+        undo = {
+          -- telescope-undo.nvim config, see below
+        },
+        -- no other extensions here, they can have their own spec too
+      },
+    },
+    config = function(_, opts)
+      -- Calling telescope's setup from multiple specs does not hurt, it will happily merge the
+      -- configs for us. We won't use data, as everything is in it's own namespace (telescope
+      -- defaults, as well as each extension).
+      require("telescope").setup(opts)
+      require("telescope").load_extension("undo")
+    end,
+  }
 }
