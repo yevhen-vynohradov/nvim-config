@@ -30,6 +30,30 @@ local handler = function(virtText, lnum, endLnum, width, truncate)
   return newVirtText
 end
 
+local opts = {
+  -- INFO: Uncomment to use treeitter as fold provider, otherwise nvim lsp is used
+  provider_selector = function(_, _, _)
+    return { "treesitter", "indent" }
+  end,
+  open_fold_hl_timeout = 400,
+  close_fold_kinds = { "imports", "comment" },
+  preview = {
+    win_config = {
+      border = { "", "─", "", "", "", "─", "", "" },
+      -- winhighlight = "Normal:Folded",
+      winhighlight = "Normal:UfoPreviewNormal,FloatBorder:UfoPreviewBorder,CursorLine:UfoPreviewCursorLine",
+      winblend = 0,
+    },
+    mappings = {
+      scrollU = "<C-u>",
+      scrollD = "<C-d>",
+      jumpTop = "[",
+      jumpBot = "]",
+    },
+  },
+}
+
+
 return {
   {
     "kevinhwang91/nvim-ufo",
@@ -40,12 +64,12 @@ return {
     },
     event = { "VeryLazy" },
     init = function()
-			vim.o.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
-			vim.o.foldcolumn = "1" -- '0' is not bad
-			vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
-			vim.o.foldlevelstart = 99
-			vim.o.foldenable = true
-		end,
+      vim.o.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
+      vim.o.foldcolumn = "1" -- '0' is not bad
+      vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
+      vim.o.foldlevelstart = 99
+      vim.o.foldenable = true
+    end,
     --stylua: ignore
     keys = {
       { "zc" },
@@ -77,22 +101,25 @@ return {
     end,
   },
   {
-		"anuvyklack/fold-preview.nvim",
-		dependencies = "anuvyklack/keymap-amend.nvim",
-		config = function()
-			local fp = require("fold-preview")
-			local keymap = vim.keymap
-			keymap.amend = require("keymap-amend")
+    "anuvyklack/fold-preview.nvim",
+    enabled = true,
+    dependencies = { 
+      "anuvyklack/keymap-amend.nvim" 
+    },
+    config = function()
+      local fp = require("fold-preview")
+      local keymap = vim.keymap
+      keymap.amend = require("keymap-amend")
 
-			fp.setup({
-				border = "rounded",
-			})
+      fp.setup({
+        border = "rounded",
+      })
 
-			keymap.amend("n", "K", function(original)
-				if not fp.toggle_preview() then
-					original()
-				end
-			end)
-		end,
-	},
+      keymap.amend("n", "K", function(original)
+        if not fp.toggle_preview() then
+          original()
+        end
+      end)
+    end,
+  },
 }

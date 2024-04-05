@@ -11,5 +11,8 @@ return {
         desc = "Replacer",
       },
     },
-  }
+  },
+  {
+    "inkarkat/vim-ReplaceWithRegister",
+  },
 }

@@ -100,6 +100,7 @@ return {
     "nvim-telescope/telescope.nvim",
     dependencies = {
       "nvim-lua/plenary.nvim",
+      "BurntSushi/ripgrep",
       {
         "nvim-telescope/telescope-fzf-native.nvim",
         build = "make"
@@ -364,21 +365,21 @@ return {
         },
       }
       telescope.setup(opts)
-      telescope.load_extension "fzf"
-      telescope.load_extension "file_browser"
-      telescope.load_extension "project"
-      telescope.load_extension "projects"
-      telescope.load_extension "aerial"
-      telescope.load_extension "dap"
-      telescope.load_extension "frecency"
-      telescope.load_extension "luasnip"
-      telescope.load_extension "conventional_commits"
-      telescope.load_extension "lazy"
-      telescope.load_extension "noice"
-      telescope.load_extension "notify"
-      telescope.load_extension "zoxide"
-      telescope.load_extension "live_grep_args"
-      telescope.load_extension "scope"
+      telescope.load_extension("fzf")
+      telescope.load_extension("file_browser")
+      telescope.load_extension("project")
+      telescope.load_extension("projects")
+      telescope.load_extension("aerial")
+      telescope.load_extension("dap")
+      telescope.load_extension("frecency")
+      telescope.load_extension("luasnip")
+      telescope.load_extension("conventional_commits")
+      telescope.load_extension("lazy")
+      telescope.load_extension("noice")
+      telescope.load_extension("notify")
+      telescope.load_extension("zoxide")
+      telescope.load_extension("live_grep_args")
+      telescope.load_extension("scope")
 
       -- Highlights
       local fg_bg = require("utils").fg_bg
@@ -386,20 +387,6 @@ return {
       fg_bg("TelescopePreviewTitle", colors.black, colors.green)
       fg_bg("TelescopePromptTitle", colors.black, colors.red)
       fg_bg("TelescopeResultsTitle", colors.darker_black, colors.blue)
-    end,
-  },
-  {
-    "stevearc/aerial.nvim",
-    config = true,
-  },
-  {
-    "ahmedkhalf/project.nvim",
-    config = function()
-      require("project_nvim").setup {
-        detection_methods = { "pattern", "lsp" },
-        patterns = { ".git" },
-        ignore_lsp = { "null-ls" },
-      }
     end,
   },
   {

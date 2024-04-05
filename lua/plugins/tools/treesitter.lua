@@ -16,10 +16,16 @@ end)()
 
 return {
   {
+    -- Tree-sitter is a parser generator tool and
+    -- an incremental parsing library. It can build
+    -- a concrete syntax tree for a source file and
+    -- efficiently update the syntax tree
+    -- as the source file is edited.
+
     "nvim-treesitter/nvim-treesitter",
     dependencies = {
       "nvim-treesitter/nvim-treesitter-textobjects",
-      { 
+      {
         "JoosepAlviste/nvim-ts-context-commentstring",
         config = function()
           require('ts_context_commentstring').setup {
@@ -137,52 +143,6 @@ return {
       -- vim.keymap.set({ "n", "x", "o" }, "F", ts_repeat_move.builtin_F)
       -- vim.keymap.set({ "n", "x", "o" }, "t", ts_repeat_move.builtin_t)
       -- vim.keymap.set({ "n", "x", "o" }, "T", ts_repeat_move.builtin_T)
-    end,
-  },
-  {
-    "windwp/nvim-autopairs",
-    event = "InsertEnter",
-    enabled = true,
-    config = function()
-      local npairs = require("nvim-autopairs")
-      npairs.setup {
-        check_ts = true,
-      }
-    end,
-  },
-  {
-    "altermo/ultimate-autopair.nvim",
-    enabled = false,
-    event = { "InsertEnter", "CmdlineEnter" },
-    branch = "v0.6",
-    opts = {},
-  },
-  {
-    "ckolkey/ts-node-action",
-    dependencies = { "nvim-treesitter" },
-    enabled = true,
-    opts = {},
-    keys = {
-      {
-        "<leader>ln",
-        function()
-          require("ts-node-action").node_action()
-        end,
-        desc = "Node Action",
-      },
-    },
-  },
-  {
-    "Wansmer/treesj",
-    cmd = { "TSJToggle", "TSJSplit", "TSJJoin" },
-    keys = {
-      { "<leader>lj", "<cmd>TSJToggle<cr>", desc = "Toggle Split/Join" },
-    },
-    dependencies = { "nvim-treesitter/nvim-treesitter" },
-    config = function()
-      require("treesj").setup {
-        use_default_keymaps = false,
-      }
     end,
   },
 }

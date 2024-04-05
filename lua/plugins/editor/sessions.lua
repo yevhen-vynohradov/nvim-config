@@ -24,7 +24,7 @@ return {
       },
     },
     init = function()
-      vim.opt.sessionoptions:append "globals"
+      vim.opt.sessionoptions:append("globals")
     end,
     dependencies = {
       { "nvim-lua/plenary.nvim" },
@@ -108,4 +108,30 @@ return {
       },
     },
   },
+  {
+    "ahmedkhalf/project.nvim",
+    config = function()
+      require("project_nvim").setup {
+        detection_methods = { "pattern", "lsp" },
+        patterns = { ".git" },
+        ignore_lsp = { "null-ls" },
+      }
+    end,
+  },
+  {
+    "rmagatti/auto-session",
+    config = function()
+      local auto_session = require("auto-session")
+  
+      auto_session.setup({
+        auto_restore_enabled = false,
+        auto_session_suppress_dirs = { "~/", "~/Dev/", "~/Downloads", "~/Documents", "~/Desktop/" },
+      })
+  
+      local keymap = vim.keymap
+  
+      keymap.set("n", "<leader>wr", "<cmd>SessionRestore<CR>", { desc = "Restore session for cwd" }) -- restore last workspace session for current directory
+      keymap.set("n", "<leader>ws", "<cmd>SessionSave<CR>", { desc = "Save session for auto session root dir" }) -- save workspace session for current working directory
+    end,
+  }
 }

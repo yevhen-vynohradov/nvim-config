@@ -14,10 +14,8 @@ vim.opt.rtp:prepend(lazypath)
 -- Configure lazy.nvim
 require("lazy").setup({
 	{ import = "plugins" },
-	{ import = "plugins.code" },
 	{ import = "plugins.editor" },
 	{ import = "plugins.tools" },
-	{ import = "plugins.vcs" },
 	-- { import = "plugins.notes" },
 	-- { import = "plugins.ai" },
 	{ import = "pde" },
@@ -25,7 +23,7 @@ require("lazy").setup({
 	defaults = { lazy = true, version = nil },
 	install = {
 		missing = true,
-		colorscheme = { "tokyonight", "monokai-pro", "nightfly" },
+		colorscheme = { "tokyonight" },
 	},
 	ui = {
 		border = "rounded",
