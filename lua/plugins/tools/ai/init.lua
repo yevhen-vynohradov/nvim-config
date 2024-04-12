@@ -1,4 +1,4 @@
-if not require("config").pde.ai then
+if not require("config").tools.ai then
   return {}
 end
 

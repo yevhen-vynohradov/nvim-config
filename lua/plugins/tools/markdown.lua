@@ -1,18 +1,7 @@
 return {
-  -- correctly setup lspconfig
-  {
-    "neovim/nvim-lspconfig",
-    opts = {
-      -- make sure mason installs the server
-      servers = {
-        marksman = {},
-        -- zk = {},
-      },
-    },
-  },
   {
     "Zeioth/markmap.nvim",
-    build = "yarn global add markmap-cli",
+    build = "npm -g install markmap-cli",
     cmd = { "MarkmapOpen", "MarkmapSave", "MarkmapWatch", "MarkmapWatchStop" },
     opts = {
       html_output = "/tmp/markmap.html", -- (default) Setting a empty string "" here means: [Current buffer path].html

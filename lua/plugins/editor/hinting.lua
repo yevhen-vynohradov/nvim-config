@@ -1,53 +1,63 @@
 return {
   {
+    -- A Neovim plugin helping you establish good command workflow and habit
     "m4xshen/hardtime.nvim",
-    cmd = { "HardTime" },
     enabled = true,
-    dependencies = { "MunifTanjim/nui.nvim" },
+    cmd = { "HardTime" },
+    dependencies = {
+      "MunifTanjim/nui.nvim",
+    },
     opts = {},
   },
   {
-		"code-biscuits/nvim-biscuits",
+    -- Code Biscuits are in-editor annotations usually at the end of 
+    -- a closing tag/bracket/parenthesis/etc. They help you get the 
+    -- context of the end of that AST node so you don't have to 
+    -- navigate to find it.
+    "code-biscuits/nvim-biscuits",
     dependencies = {
       "nvim-treesitter/nvim-treesitter",
     },
-		config = function()
-			local biscuits = require("nvim-biscuits")
-			biscuits.setup({
-				default_config = {
-					max_length = 12,
-					min_distance = 5,
-					prefix_string = " 📎 ",
-				},
-				cursor_line_only = true,
-				-- on_events = {
-				-- 	"CursorHold",
-				-- 	"CursorHoldI",
-				-- 	"InsertLeave",
-				-- },
-				language_config = {
-					vimdoc = {
-						disabled = true,
-					},
-					html = {
-						prefix_string = " 🌐 ",
-					},
-					javascript = {
-						prefix_string = " ✨ ",
-						max_length = 80,
-					},
-					typescript = {
-						prefix_string = " ✨ ",
-						max_length = 80,
-					},
+    config = function()
+      local biscuits = require("nvim-biscuits")
+      biscuits.setup({
+        default_config = {
+          max_length = 12,
+          min_distance = 5,
+          prefix_string = " 📎 ",
+        },
+        cursor_line_only = true,
+        -- on_events = {
+        -- 	"CursorHold",
+        -- 	"CursorHoldI",
+        -- 	"InsertLeave",
+        -- },
+        -- TODO: extract it to pde files
+        language_config = {
+          vimdoc = {
+            disabled = true,
+          },
+          html = {
+            prefix_string = " 🌐 ",
+          },
+          javascript = {
+            prefix_string = " ✨ ",
+            max_length = 80,
+          },
+          typescript = {
+            prefix_string = " ✨ ",
+            max_length = 80,
+          },
           python = {
-						disabled = true,
-					},
-				},
-			})
-		end,
-	},
+            disabled = true,
+          },
+        },
+      })
+    end,
+  },
   {
+    -- Define your keymaps, commands, and autocommands as simple 
+    -- Lua tables, building a legend at the same time
     "mrjones2014/legendary.nvim",
     keys = {
       { "<C-S-p>",    "<cmd>Legendary<cr>", desc = "Legendary" },
@@ -58,6 +68,8 @@ return {
     },
   },
   {
+    -- WhichKey is a lua plugin for Neovim 0.5 that displays a popup with 
+    -- possible key bindings of the command you started typing. 
     "folke/which-key.nvim",
     cond = function()
       return require("config").keymenu.which_key
@@ -146,6 +158,8 @@ return {
     end,
   },
   {
+    -- A Neovim plugin that renders a keyboard displaying 
+    -- which keys have assigned actions.
     "jokajak/keyseer.nvim",
     enabled = false,
     opts = {},
@@ -153,6 +167,7 @@ return {
     cmd = { "KeySeer" },
   },
   {
+    -- Show next key clues
     "echasnovski/mini.clue",
     cond = function()
       return require("config").keymenu.mini_clue

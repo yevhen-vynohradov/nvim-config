@@ -1,6 +1,8 @@
 return {
   {
+    -- Neogen - Your Annotation Toolkit
     "danymat/neogen",
+    enabled = true,
     opts = {
       snippet_engine = "luasnip",
       enabled = true,
@@ -39,10 +41,10 @@ return {
     },
     --stylua: ignore
     keys = {
-      { "<leader>lgd", function() require("neogen").generate() end, desc = "Annotation", },
+      { "<leader>lgd", function() require("neogen").generate() end,                  desc = "Annotation", },
       { "<leader>lgc", function() require("neogen").generate { type = "class" } end, desc = "Class", },
-      { "<leader>lgf", function() require("neogen").generate { type = "func" } end, desc = "Function", },
-      { "<leader>lgt", function() require("neogen").generate { type = "type" } end, desc = "Type", },
+      { "<leader>lgf", function() require("neogen").generate { type = "func" } end,  desc = "Function", },
+      { "<leader>lgt", function() require("neogen").generate { type = "type" } end,  desc = "Type", },
     },
   }
 }

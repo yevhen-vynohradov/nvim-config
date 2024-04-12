@@ -1,148 +1,338 @@
 local swap_next, swap_prev = (function()
-  local swap_objects = {
-    p = "@parameter.inner",
-    f = "@function.outer",
-    c = "@class.outer",
-  }
+	local swap_objects = {
+		p = "@parameter.inner",
+		f = "@function.outer",
+		c = "@class.outer",
+	}
 
-  local n, p = {}, {}
-  for key, obj in pairs(swap_objects) do
-    n[string.format("<leader>lx%s", key)] = obj
-    p[string.format("<leader>lX%s", key)] = obj
-  end
+	local n, p = {}, {}
+	for key, obj in pairs(swap_objects) do
+		n[string.format("<leader>lx%s", key)] = obj
+		p[string.format("<leader>lX%s", key)] = obj
+	end
 
-  return n, p
+	return n, p
 end)()
 
 return {
-  {
-    -- Tree-sitter is a parser generator tool and
-    -- an incremental parsing library. It can build
-    -- a concrete syntax tree for a source file and
-    -- efficiently update the syntax tree
-    -- as the source file is edited.
+	{
+		-- Tree-sitter is a parser generator tool and
+		-- an incremental parsing library. It can build
+		-- a concrete syntax tree for a source file and
+		-- efficiently update the syntax tree
+		-- as the source file is edited.
 
-    "nvim-treesitter/nvim-treesitter",
-    dependencies = {
-      "nvim-treesitter/nvim-treesitter-textobjects",
-      {
-        "JoosepAlviste/nvim-ts-context-commentstring",
-        config = function()
-          require('ts_context_commentstring').setup {
-            enable_autocmd = false,
-          }
-        end
-      },
-      "RRethy/nvim-treesitter-endwise",
-      "windwp/nvim-ts-autotag",
-      "nvim-treesitter/playground",
-    },
-    build = ":TSUpdate",
-    event = { "BufReadPost", "BufNewFile" },
-    opts = {
-      sync_install = false,
-      ensure_installed = {
-        "bash",
-        -- "dapl_repl",
-        "dockerfile",
-        "html",
-        "markdown",
-        "markdown_inline",
-        "org",
-        "query",
-        "regex",
-        "latex",
-        "vim",
-        "vimdoc",
-        "yaml",
-      },
-      highlight = { enable = true, additional_vim_regex_highlighting = { "org", "markdown" } },
-      indent = { enable = true },
-      context_commentstring = { enable_autocmd = false },
-      incremental_selection = {
-        enable = true,
-        keymaps = {
-          -- init_selection = "<c-space>",
-          node_incremental = "v",
-          node_decremental = "V",
-          -- scope_incremental = "<c-s>",
-        },
-      },
-      textobjects = {
-        select = {
-          enable = true,
-          lookahead = true, -- Automatically jump forward to textobj, similar to targets.vim
-          keymaps = {
-            -- You can use the capture groups defined in textobjects.scm
-            ["aa"] = "@parameter.outer",
-            ["ia"] = "@parameter.inner",
-            ["af"] = "@function.outer",
-            ["if"] = "@function.inner",
-            ["ac"] = "@class.outer",
-            ["ic"] = "@class.inner",
-          },
-        },
-        move = {
-          enable = true,
-          set_jumps = true, -- whether to set jumps in the jumplist
-          goto_next_start = {
-            ["]m"] = "@function.outer",
-            ["]]"] = "@class.outer",
-          },
-          goto_next_end = {
-            ["]M"] = "@function.outer",
-            ["]["] = "@class.outer",
-          },
-          goto_previous_start = {
-            ["[m"] = "@function.outer",
-            ["[["] = "@class.outer",
-          },
-          goto_previous_end = {
-            ["[M"] = "@function.outer",
-            ["[]"] = "@class.outer",
-          },
-        },
-        swap = {
-          enable = true,
-          swap_next = swap_next,
-          swap_previous = swap_prev,
-        },
-      },
-      matchup = {
-        enable = true,
-      },
-      endwise = {
-        enable = true,
-      },
-      autotag = {
-        enable = true,
-      },
-    },
-    config = function(_, opts)
-      if type(opts.ensure_installed) == "table" then
-        ---@type table<string, boolean>
-        local added = {}
-        opts.ensure_installed = vim.tbl_filter(function(lang)
-          if added[lang] then
-            return false
-          end
-          added[lang] = true
-          return true
-        end, opts.ensure_installed)
-      end
-      require("nvim-treesitter.configs").setup(opts)
+		"nvim-treesitter/nvim-treesitter",
+		dependencies = {
+			{
+				"nvim-treesitter/playground",
+				cmd = "TSPlaygroundToggle",
+			},
+			{
+				"nvim-treesitter/nvim-treesitter-textobjects",
+				enabled = true,
+				lazy = true,
+				event = { "BufReadPre", "BufNewFile" },
+				config = function()
+					local ts_repeat_move = require("nvim-treesitter.textobjects.repeatable_move")
+		
+					-- vim way: ; goes to the direction you were moving.
+					vim.keymap.set({ "n", "x", "o" }, ";", ts_repeat_move.repeat_last_move)
+					vim.keymap.set({ "n", "x", "o" }, ",", ts_repeat_move.repeat_last_move_opposite)
+		
+					-- Optionally, make builtin f, F, t, T also repeatable with ; and ,
+					vim.keymap.set({ "n", "x", "o" }, "f", ts_repeat_move.builtin_f)
+					vim.keymap.set({ "n", "x", "o" }, "F", ts_repeat_move.builtin_F)
+					vim.keymap.set({ "n", "x", "o" }, "t", ts_repeat_move.builtin_t)
+					vim.keymap.set({ "n", "x", "o" }, "T", ts_repeat_move.builtin_T)
+				end,
+			},
+			{
+				"JoosepAlviste/nvim-ts-context-commentstring",
+				enabled = true,
+				lazy = true,
+				event = { "BufReadPre", "BufNewFile" },
+				config = function()
+					require('ts_context_commentstring').setup {
+						enable_autocmd = false,
+					}
+				end
+			},
+			"RRethy/nvim-treesitter-endwise",
+			{
+				"windwp/nvim-ts-autotag",
+				lazy = true,
+				event = { "BufReadPre", "BufNewFile" },
+			},
+			{
+				"nvim-treesitter/nvim-treesitter-context",
+				lazy = true,
+				event = { "BufReadPre", "BufNewFile" },
+				config = function()
+					require("treesitter-context").setup({
+						enable = true,
+						-- max_lines = 5,
+						line_numbers = true,
+						separator = "-",
+					})
+				end,
+			},
+			{
+				"nvim-treesitter/nvim-treesitter-refactor",
+				lazy = true,
+				event = { "BufReadPre", "BufNewFile" },
+			},
+		},
+		build = function()
+			local ts_update = require("nvim-treesitter.install").update({
+				with_sync = true,
+			})
+			ts_update()
+		end,
+		-- build = ":TSUpdate",
+		event = { "BufReadPre", "BufReadPost", "BufNewFile" },
+		config = function()
+			require("nvim-treesitter.configs").setup({
+				sync_install = false,
+				-- ensure these language parsers are installed
+				ensure_installed = {
+					-- data
+					"json",
+					"json5",
+					"jsonc",
+					"csv",
+					-- markup
+					"css",
+					"html",
+					"markdown",
+					"markdown_inline",
+					"xml",
+					-- config
+					"dot",
+					"toml",
+					"yaml",
+					-- utility
+					"diff",
+					"ssh_config",
+					"printf",
+					"disassembly",
+					"dockerfile",
+					"git_config",
+					"git_rebase",
+					"gitcommit",
+					"gitignore",
+					"http",
+					"query",
+					-- language
+					"javascript",
+					"typescript",
+					"tsx",
+					"prisma",
+					"sql",
+					"scheme",
+					"bash",
+					"lua",
+					"vim",
+					"vimdoc",
+					"regex",
+					"luadoc",
+					"luap",
+				},
+				highlight = {
+					enable = true,
+					additional_vim_regex_highlighting = { "org", "markdown" },
+					-- additional_vim_regex_highlighting = false,
+					disable = function(_, buf)
+						local max_filesize = 100 * 1024 -- 100 KB
+						local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
+						if ok and stats and stats.size > max_filesize then
+							return true
+						end
+					end,
+				},
+				-- enable autotagging (w/ nvim-ts-autotag plugin)
+				autotag = {
+					enable = true,
+					enable_rename = true,
+					enable_close = true,
+					enable_close_on_slash = true,
+				},
+				indent = { enable = true },
+				context_commentstring = { enable_autocmd = false },
+				incremental_selection = {
+					enable = true,
+					keymaps = {
+						-- init_selection = "<c-space>",
+						-- node_incremental = "v",
+						-- node_decremental = "V",
+						-- scope_incremental = "<c-s>",
 
-      -- local ts_repeat_move = require "nvim-treesitter.textobjects.repeatable_move"
+						init_selection = "<C-space>",
+						node_incremental = "<C-space>",
+						scope_incremental = false,
+						node_decremental = "<bs>",
+					},
+				},
+				query_linter = {
+					enable = true,
+					use_virtual_text = true,
+					lint_events = { "BufWrite", "CursorHold" },
+				},
+				playground = {
+					enable = true,
+					disable = {},
+					updatetime = 25,   -- Debounced time for highlighting nodes in the playground from source code
+					persist_queries = true, -- Whether the query persists across vim sessions
+					keybindings = {
+						toggle_query_editor = "o",
+						toggle_hl_groups = "i",
+						toggle_injected_languages = "t",
+						toggle_anonymous_nodes = "a",
+						toggle_language_display = "I",
+						focus_language = "f",
+						unfocus_language = "F",
+						update = "R",
+						goto_node = "<cr>",
+						show_help = "?",
+					},
+				},
+				textobjects = {
+					select = {
+						enable = true,
+						-- Automatically jump forward to textobj, similar to targets.vim
+						lookahead = true,
 
-      -- -- vim way: ; goes to the direction you were moving.
-      -- vim.keymap.set({ "n", "x", "o" }, ";", ts_repeat_move.repeat_last_move)
-      -- vim.keymap.set({ "n", "x", "o" }, ",", ts_repeat_move.repeat_last_move_opposite)
+						keymaps = {
+							-- You can use the capture groups defined in textobjects.scm
+							["a="] = { query = "@assignment.outer", desc = "Select outer part of an assignment" },
+							["i="] = { query = "@assignment.inner", desc = "Select inner part of an assignment" },
+							["l="] = { query = "@assignment.lhs", desc = "Select left hand side of an assignment" },
+							["r="] = { query = "@assignment.rhs", desc = "Select right hand side of an assignment" },
 
-      -- -- Optionally, make builtin f, F, t, T also repeatable with ; and ,
-      -- vim.keymap.set({ "n", "x", "o" }, "f", ts_repeat_move.builtin_f)
-      -- vim.keymap.set({ "n", "x", "o" }, "F", ts_repeat_move.builtin_F)
-      -- vim.keymap.set({ "n", "x", "o" }, "t", ts_repeat_move.builtin_t)
-      -- vim.keymap.set({ "n", "x", "o" }, "T", ts_repeat_move.builtin_T)
-    end,
-  },
+							-- works for javascript/typescript files (custom capture I created in after/queries/ecma/textobjects.scm)
+							["a:"] = { query = "@property.outer", desc = "Select outer part of an object property" },
+							["i:"] = { query = "@property.inner", desc = "Select inner part of an object property" },
+							["l:"] = { query = "@property.lhs", desc = "Select left part of an object property" },
+							["r:"] = { query = "@property.rhs", desc = "Select right part of an object property" },
+
+							["aa"] = { query = "@parameter.outer", desc = "Select outer part of a parameter/argument" },
+							["ia"] = { query = "@parameter.inner", desc = "Select inner part of a parameter/argument" },
+
+							["ai"] = { query = "@conditional.outer", desc = "Select outer part of a conditional" },
+							["ii"] = { query = "@conditional.inner", desc = "Select inner part of a conditional" },
+
+							["al"] = { query = "@loop.outer", desc = "Select outer part of a loop" },
+							["il"] = { query = "@loop.inner", desc = "Select inner part of a loop" },
+
+							["af"] = { query = "@call.outer", desc = "Select outer part of a function call" },
+							["if"] = { query = "@call.inner", desc = "Select inner part of a function call" },
+
+							["am"] = {
+								query = "@function.outer",
+								desc = "Select outer part of a method/function definition",
+							},
+							["im"] = {
+								query = "@function.inner",
+								desc = "Select inner part of a method/function definition",
+							},
+
+							["ac"] = { query = "@class.outer", desc = "Select outer part of a class" },
+							["ic"] = { query = "@class.inner", desc = "Select inner part of a class" },
+						},
+					},
+					move = {
+						enable = true,
+						set_jumps = true, -- whether to set jumps in the jumplist
+						goto_next_start = {
+							["]f"] = { query = "@call.outer", desc = "Next function call start" },
+							["]m"] = { query = "@function.outer", desc = "Next method/function def start" },
+							["]c"] = { query = "@class.outer", desc = "Next class start" },
+							["]i"] = { query = "@conditional.outer", desc = "Next conditional start" },
+							["]l"] = { query = "@loop.outer", desc = "Next loop start" },
+
+							-- You can pass a query group to use query from `queries/<lang>/<query_group>.scm file in your runtime path.
+							-- Below example nvim-treesitter's `locals.scm` and `folds.scm`. They also provide highlights.scm and indent.scm.
+							["]s"] = { query = "@scope", query_group = "locals", desc = "Next scope" },
+							["]z"] = { query = "@fold", query_group = "folds", desc = "Next fold" },
+						},
+						goto_next_end = {
+							["]F"] = { query = "@call.outer", desc = "Next function call end" },
+							["]M"] = { query = "@function.outer", desc = "Next method/function def end" },
+							["]C"] = { query = "@class.outer", desc = "Next class end" },
+							["]I"] = { query = "@conditional.outer", desc = "Next conditional end" },
+							["]L"] = { query = "@loop.outer", desc = "Next loop end" },
+						},
+						goto_previous_start = {
+							["[f"] = { query = "@call.outer", desc = "Prev function call start" },
+							["[m"] = { query = "@function.outer", desc = "Prev method/function def start" },
+							["[c"] = { query = "@class.outer", desc = "Prev class start" },
+							["[i"] = { query = "@conditional.outer", desc = "Prev conditional start" },
+							["[l"] = { query = "@loop.outer", desc = "Prev loop start" },
+						},
+						goto_previous_end = {
+							["[F"] = { query = "@call.outer", desc = "Prev function call end" },
+							["[M"] = { query = "@function.outer", desc = "Prev method/function def end" },
+							["[C"] = { query = "@class.outer", desc = "Prev class end" },
+							["[I"] = { query = "@conditional.outer", desc = "Prev conditional end" },
+							["[L"] = { query = "@loop.outer", desc = "Prev loop end" },
+						},
+					},
+					swap = {
+						enable = true,
+						swap_next = {
+							["<leader>na"] = "@parameter.inner", -- swap parameters/argument with next
+							["<leader>n:"] = "@property.outer", -- swap object property with next
+							["<leader>nm"] = "@function.outer", -- swap function with next
+						},
+						swap_previous = {
+							["<leader>pa"] = "@parameter.inner", -- swap parameters/argument with prev
+							["<leader>p:"] = "@property.outer", -- swap object property with prev
+							["<leader>pm"] = "@function.outer", -- swap function with previous
+						},
+					},
+					lsp_interop = {
+						enable = true,
+						border = "rounded",
+						floating_preview_opts = {},
+						peek_definition_code = {
+							["<leader>df"] = "@function.outer",
+							["<leader>dF"] = "@class.outer",
+						},
+					},
+				},
+				matchup = {
+					enable = true,
+				},
+				endwise = {
+					enable = true,
+				},
+				refactor = {
+					highlight_current_scope = { enable = true },
+					smart_rename = {
+						enable = true,
+						-- Assign keymaps to false to disable them, e.g. `smart_rename = false`.
+						keymaps = {
+							smart_rename = "grr",
+						},
+					},
+					navigation = {
+						enable = true,
+						-- Assign keymaps to false to disable them, e.g. `goto_definition = false`.
+						keymaps = {
+							goto_definition = "gnd",
+							list_definitions = "gnD",
+							list_definitions_toc = "gO",
+							goto_next_usage = "<a-*>",
+							goto_previous_usage = "<a-#>",
+						},
+					},
+					highlight_definitions = {
+						enable = true,
+						-- Set to false if you have an `updatetime` of ~100.
+						clear_on_cursor_move = true,
+					},
+				},
+			})
+		end,
+	},
 }

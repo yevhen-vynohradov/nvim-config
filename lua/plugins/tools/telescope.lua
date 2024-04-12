@@ -38,7 +38,7 @@ function M.git_diff_picker(opts)
       :find()
 end
 
-M.actions = transform_mod {
+M.actions = transform_mod({
 
   set_extension = function(prompt_bufnr)
     local current_input = action_state.get_current_line()
@@ -93,7 +93,7 @@ M.actions = transform_mod {
         })
         :find()
   end,
-}
+})
 
 return {
   {
@@ -108,6 +108,7 @@ return {
       "nvim-telescope/telescope-file-browser.nvim",
       "nvim-telescope/telescope-project.nvim",
       "cljoly/telescope-repo.nvim",
+      "lpoto/telescope-docker.nvim",
       "nvim-telescope/telescope-frecency.nvim",
       "benfowler/telescope-luasnip.nvim",
       "olacin/telescope-cc.nvim",
@@ -126,6 +127,7 @@ return {
     cmd = "Telescope",
     -- stylua: ignore
     keys = {
+      { "<leader>fd", "<Cmd>Telescope docker<CR>", desc = "Docker" },
       { "<leader><space>", require("utils").find_files,                                                                                     desc = "Find Files" },
       { "<leader>ff",      require("utils").telescope("files"),                                                                             desc = "Find Files (Root Dir)" },
       { "<leader>fF",      require("utils").telescope("files", { cwd = false }),                                                            desc = "Find Files (Cwd)" },
@@ -380,6 +382,7 @@ return {
       telescope.load_extension("zoxide")
       telescope.load_extension("live_grep_args")
       telescope.load_extension("scope")
+      telescope.load_extension("docker")
 
       -- Highlights
       local fg_bg = require("utils").fg_bg

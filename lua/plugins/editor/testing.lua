@@ -38,13 +38,23 @@ return {
       "nvim-neotest/neotest-vim-test",
       "vim-test/vim-test",
       "stevearc/overseer.nvim",
+      "nvim-neotest/neotest-plenary",
     },
     opts = function()
       return {
         adapters = {
           require("neotest-vim-test")({
             ignore_file_types = { "python", "vim", "lua" },
-          })
+          }),
+          require("neotest-plenary"),
+          require("neotest-jest"),
+          require("neotest-vitest"),
+          require("neotest-playwright").adapter {
+            options = {
+              persist_project_selection = true,
+              enable_dynamic_test_discovery = true,
+            },
+          },
         },
         status = { virtual_text = true },
         output = { open_on_run = true },

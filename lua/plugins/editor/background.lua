@@ -1,5 +1,9 @@
 return {
   {
+    -- Remove all background colors to make nvim transparent.
+
+    -- https://github.com/xiyaowong/transparent.nvim
+
     "xiyaowong/nvim-transparent",
     cmd = { "TransparentEnable", "TransparentDisable", "TransparentToggle" },
     opts = {
