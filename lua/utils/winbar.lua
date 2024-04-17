@@ -1,12 +1,12 @@
 local M = {}
 
 local navic = require("nvim-navic")
-local utils = require("core.utils")
-local icons = require("lua.config.icons")
+local utils = require("utils")
+local icons = require("core.icons")
 
 local function get_modified()
-  local file_name = vim.fn.expand "%:t"
-  local extension = vim.fn.expand "%:e"
+  local file_name = vim.fn.expand("%:t")
+  local extension = vim.fn.expand("%:e")
 
   if file_name then
     local file_icon, file_icon_color =
